@@ -1,18 +1,19 @@
-import Container from "@/components/Container";
 import Hero from "@/components/Hero";
+import LatestCollections from "@/components/LatestCollections";
+import BestSellers from "@/components/BestSellers";
+import PolicyStrip from "@/components/PolicyStrip";
+import SubscriptionSection from "@/components/SubscriptionSection";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       <Hero />
-      <section>
-        <Container>
-          <h1 className="text-4xl font-bold mb-4">Welcome to Swaaya</h1>
-          <p className="text-gray-500">
-            Premium fashion e-commerce layout system
-          </p>
-        </Container>
-      </section>
+      <LatestCollections />
+      <BestSellers />
+      <PolicyStrip />
+      <SubscriptionSection />
+      <Footer />
     </div>
   );
 }
