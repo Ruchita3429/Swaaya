@@ -3,7 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #111827;
-  --foreground-secondary: #6b7280;
+  --foreground-secondary: #6b7280; /* gray-500 */
 }
 
 @theme inline {
@@ -13,13 +13,19 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  background: #ffffff;
+}
+
 body {
   background: #ffffff;
   color: #111827;
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-/* Section spacing utilities */
+/* Section spacing utilities - Premium fashion e-commerce layout */
 section {
   padding-top: 3rem; /* 48px mobile */
   padding-bottom: 3rem; /* 48px mobile */
