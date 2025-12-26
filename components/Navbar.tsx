@@ -111,6 +111,7 @@ export default function Navbar() {
             </button>
 
             {/* Cart Icon with Badge */}
+      {/* Cart Icon */}
             <button
               className="relative p-2 hover:opacity-70 transition-opacity"
               aria-label="Shopping Cart"
@@ -138,12 +139,8 @@ export default function Navbar() {
                   strokeLinejoin="round"
                 />
               </svg>
-              {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-xs font-medium text-white bg-[#111827] rounded-full">
-                  {cartItemCount}
-                </span>
-              )}
             </button>
+                          
 
             {/* Mobile Hamburger Menu */}
             <button
