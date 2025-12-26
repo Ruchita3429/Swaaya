@@ -2,7 +2,6 @@ import Hero from "@/components/Hero";
 import LatestCollections from "@/components/LatestCollections";
 import BestSellers from "@/components/BestSellers";
 import PolicyStrip from "@/components/PolicyStrip";
-import SubscriptionSection from "@/components/SubscriptionSection";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -12,7 +11,6 @@ export default function Home() {
       <LatestCollections />
       <BestSellers />
       <PolicyStrip />
-      <SubscriptionSection />
       <Footer />
     </div>
   );

@@ -11,7 +11,7 @@ export default function Footer() {
             {/* Column 1: Brand */}
             <div>
               <h3 className="text-xl font-bold uppercase tracking-tight text-[#111827] mb-4">
-                FOREVER.
+                SWAYAA.
               </h3>
               <p className="text-sm md:text-base text-gray-500 leading-relaxed">
                 Handcrafted Indian print kurtis made with traditional artistry. 
@@ -29,7 +29,7 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/"
-                    className="text-sm md:text-base text-gray-500 hover:text-[#111827] transition-colors"
+                    className="text-sm md:text-base text-gray-500 hover:text-pink-500 transition-colors"
                   >
                     Home
                   </Link>
@@ -37,7 +37,7 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/about"
-                    className="text-sm md:text-base text-gray-500 hover:text-[#111827] transition-colors"
+                    className="text-sm md:text-base text-gray-500 hover:text-pink-500 transition-colors"
                   >
                     About us
                   </Link>
@@ -45,7 +45,7 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/delivery"
-                    className="text-sm md:text-base text-gray-500 hover:text-[#111827] transition-colors"
+                    className="text-sm md:text-base text-gray-500 hover:text-pink-500 transition-colors"
                   >
                     Delivery
                   </Link>
@@ -53,7 +53,7 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/privacy"
-                    className="text-sm md:text-base text-gray-500 hover:text-[#111827] transition-colors"
+                    className="text-sm md:text-base text-gray-500 hover:text-pink-500 transition-colors"
                   >
                     Privacy policy
                   </Link>
@@ -70,17 +70,18 @@ export default function Footer() {
                 <li>
                   <a
                     href="tel:+1234567890"
-                    className="text-sm md:text-base text-gray-500 hover:text-[#111827] transition-colors block"
+                    className="text-sm md:text-base text-gray-500 hover:text-pink-500 transition-colors block"
                   >
-                    +1 (234) 567-890
+                    
+                    +91 9136728441
                   </a>
                 </li>
                 <li>
                   <a
                     href="mailto:hello@forever.com"
-                    className="text-sm md:text-base text-gray-500 hover:text-[#111827] transition-colors block"
+                    className="text-sm md:text-base text-gray-500 hover:text-pink-500 transition-colors block"
                   >
-                    hello@forever.com
+                    swayaaindia.com
                   </a>
                 </li>
                 <li>
@@ -88,7 +89,7 @@ export default function Footer() {
                     href="https://instagram.com/forever"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm md:text-base text-gray-500 hover:text-[#111827] transition-colors block"
+                    className="text-sm md:text-base text-gray-500 hover:text-pink-500 transition-colors block"
                   >
                     Instagram
                   </a>
