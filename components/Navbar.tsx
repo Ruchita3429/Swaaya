@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, User, ShoppingBag, Menu, X } from 'lucide-react';
+import { Search, User, Menu, X } from 'lucide-react';
+import CartButton from './CartButton';
 
 const menuItems = [
   { label: 'HOME', href: '/' },
@@ -68,13 +69,7 @@ export default function Navbar() {
               </button>
 
               {/* Cart Icon with Badge */}
-              <button
-                className="relative flex items-center justify-center w-10 h-10 text-gray-700 hover:text-pink-500 hover:bg-pink-50 rounded-lg transition-all duration-200"
-                aria-label="Shopping Cart"
-              >
-                <ShoppingBag size={20} />
-                
-              </button>
+              <CartButton />
 
               {/* Mobile Hamburger Menu */}
               <button

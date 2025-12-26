@@ -4,10 +4,11 @@ import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Container from '@/components/Container';
 import Footer from '@/components/Footer';
+import { useCart } from '@/contexts/CartContext';
 
 // Sample products - replace with your actual data
 const allProducts = [
-  { id: 1, name: 'Kalamkari Hand Block Print Long Kurti', price: '₹1,299', image: '/kurti-kalamkari-1.jpg', type: 'long', printType: 'kalamkari' },
+  { id: 1, name: 'Kalamkari Hand Block Print Long Kurti', price: '₹1,299', image: '/products/kurti-kalamkari-1.jpg', type: 'long', printType: 'kalamkari' },
   { id: 2, name: 'Pure Cotton Hand Block Print Short Kurti', price: '₹899', image: '/kurti-handblock-1.jpg', type: 'short', printType: 'handblock' },
   { id: 3, name: 'Kalamkari Print 2 Piece Set', price: '₹1,599', image: '/set-kalamkari-1.jpg', type: '2-piece', printType: 'kalamkari' },
   { id: 4, name: 'Hand Block Print Long Kurti with Lining Pants', price: '₹1,899', image: '/kurti-pants-1.jpg', type: 'long', printType: 'handblock' },
@@ -26,6 +27,7 @@ const allProducts = [
 ];
 
 export default function CollectionPage() {
+  const { addToCart } = useCart();
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedPrintTypes, setSelectedPrintTypes] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState('default');
@@ -294,9 +296,20 @@ export default function CollectionPage() {
                       <h3 className="text-sm md:text-base text-[#111827] mb-1">
                         {product.name}
                       </h3>
-                      <p className="text-sm md:text-base font-bold text-[#111827]">
+                      <p className="text-sm md:text-base font-bold text-[#111827] mb-3">
                         {product.price}
                       </p>
+                      <button
+                        onClick={() => addToCart({
+                          id: product.id,
+                          name: product.name,
+                          price: product.price,
+                          image: product.image,
+                        })}
+                        className="w-full px-4 py-2 text-xs md:text-sm font-medium uppercase tracking-wider text-[#111827] border border-[#111827] hover:bg-[#111827] hover:text-white transition-colors"
+                      >
+                        Add to Cart
+                      </button>
                     </div>
                   </div>
                 ))}

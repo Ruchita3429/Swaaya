@@ -1,5 +1,8 @@
+'use client';
+
 import Image from 'next/image';
 import Container from './Container';
+import { useCart } from '@/contexts/CartContext';
 
 // Indian print kurtis and related products
 const products = [
@@ -66,6 +69,8 @@ const products = [
 ];
 
 export default function LatestCollections() {
+  const { addToCart } = useCart();
+
   return (
     <section className="py-12 md:py-16 lg:py-24 bg-white">
       <Container>
@@ -101,9 +106,15 @@ export default function LatestCollections() {
                 <h3 className="text-sm md:text-base text-[#111827] mb-1">
                   {product.name}
                 </h3>
-                <p className="text-sm md:text-base font-bold text-[#111827]">
+                <p className="text-sm md:text-base font-bold text-[#111827] mb-3">
                   {product.price}
                 </p>
+                <button
+                  onClick={() => addToCart(product)}
+                  className="w-full px-4 py-2 text-xs md:text-sm font-medium uppercase tracking-wider text-[#111827] border border-[#111827] hover:bg-[#111827] hover:text-white transition-colors"
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
           ))}
