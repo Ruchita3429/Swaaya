@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Search, User, Menu, X } from 'lucide-react';
 import CartButton from './CartButton';
+import { useAuth } from '@/contexts/AuthContext';
 
 const menuItems = [
   { label: 'HOME', href: '/' },
@@ -16,6 +17,7 @@ const menuItems = [
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { isAuthenticated, user } = useAuth();
   
 
   return (
@@ -61,12 +63,13 @@ export default function Navbar() {
               </button>
 
               {/* Profile Icon */}
-              <button
+              <Link
+                href={isAuthenticated ? '/profile' : '/login'}
                 className="hidden sm:flex items-center justify-center w-10 h-10 text-gray-700 hover:text-pink-500 hover:bg-pink-50 rounded-lg transition-all duration-200"
                 aria-label="Profile"
               >
                 <User size={20} />
-              </button>
+              </Link>
 
               {/* Cart Icon with Badge */}
               <CartButton />

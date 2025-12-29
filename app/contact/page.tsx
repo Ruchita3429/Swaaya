@@ -4,29 +4,104 @@ import { useState } from 'react';
 import Container from '@/components/Container';
 import Footer from '@/components/Footer';
 
+interface FormErrors {
+  name?: string;
+  email?: string;
+  subject?: string;
+  message?: string;
+}
+
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
+    subject: '',
     message: '',
   });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitMessage, setSubmitMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    // Reset form
-    setFormData({ name: '', email: '', phone: '', message: '' });
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Full name is required';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email address is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!formData.subject.trim()) {
+      newErrors.subject = 'Subject is required';
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required';
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Message must be at least 10 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear error for this field when user starts typing
+    if (errors[name as keyof FormErrors]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+    // Clear submit status when user makes changes
+    if (submitStatus !== 'idle') {
+      setSubmitStatus('idle');
+      setSubmitMessage('');
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setSubmitMessage('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setSubmitMessage('Thank you! Your message has been sent successfully.');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setSubmitStatus('error');
+        setSubmitMessage(data.error || 'Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      setSubmitStatus('error');
+      setSubmitMessage('An error occurred. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -95,12 +170,27 @@ export default function ContactPage() {
                   Send us a Message
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Success Message */}
+                  {submitStatus === 'success' && (
+                    <div className="p-4 bg-green-50 border border-green-200 text-green-700 rounded">
+                      {submitMessage}
+                    </div>
+                  )}
+
+                  {/* Error Message */}
+                  {submitStatus === 'error' && (
+                    <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded">
+                      {submitMessage}
+                    </div>
+                  )}
+
+                  {/* Full Name */}
                   <div>
                     <label
                       htmlFor="name"
                       className="block text-sm font-medium text-[#111827] mb-2"
                     >
-                      Name
+                      Full Name
                     </label>
                     <input
                       type="text"
@@ -108,16 +198,22 @@ export default function ContactPage() {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-[#111827] focus:border-[#111827] text-[#111827]"
+                      className={`w-full px-4 py-3 border ${
+                        errors.name ? 'border-red-300' : 'border-gray-300'
+                      } focus:outline-none focus:ring-1 focus:ring-[#111827] focus:border-[#111827] text-[#111827]`}
                     />
+                    {errors.name && (
+                      <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+                    )}
                   </div>
+
+                  {/* Email Address */}
                   <div>
                     <label
                       htmlFor="email"
                       className="block text-sm font-medium text-[#111827] mb-2"
                     >
-                      Email
+                      Email Address
                     </label>
                     <input
                       type="email"
@@ -125,26 +221,39 @@ export default function ContactPage() {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-[#111827] focus:border-[#111827] text-[#111827]"
+                      className={`w-full px-4 py-3 border ${
+                        errors.email ? 'border-red-300' : 'border-gray-300'
+                      } focus:outline-none focus:ring-1 focus:ring-[#111827] focus:border-[#111827] text-[#111827]`}
                     />
+                    {errors.email && (
+                      <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                    )}
                   </div>
+
+                  {/* Subject */}
                   <div>
                     <label
-                      htmlFor="phone"
+                      htmlFor="subject"
                       className="block text-sm font-medium text-[#111827] mb-2"
                     >
-                      Phone
+                      Subject
                     </label>
                     <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-[#111827] focus:border-[#111827] text-[#111827]"
+                      className={`w-full px-4 py-3 border ${
+                        errors.subject ? 'border-red-300' : 'border-gray-300'
+                      } focus:outline-none focus:ring-1 focus:ring-[#111827] focus:border-[#111827] text-[#111827]`}
                     />
+                    {errors.subject && (
+                      <p className="mt-1 text-sm text-red-600">{errors.subject}</p>
+                    )}
                   </div>
+
+                  {/* Message */}
                   <div>
                     <label
                       htmlFor="message"
@@ -157,16 +266,23 @@ export default function ContactPage() {
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
-                      required
                       rows={5}
-                      className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-[#111827] focus:border-[#111827] text-[#111827] resize-none"
+                      className={`w-full px-4 py-3 border ${
+                        errors.message ? 'border-red-300' : 'border-gray-300'
+                      } focus:outline-none focus:ring-1 focus:ring-[#111827] focus:border-[#111827] text-[#111827] resize-none`}
                     />
+                    {errors.message && (
+                      <p className="mt-1 text-sm text-red-600">{errors.message}</p>
+                    )}
                   </div>
+
+                  {/* Submit Button */}
                   <button
                     type="submit"
-                    className="w-full px-8 py-3 bg-[#111827] text-white font-medium uppercase tracking-wider text-sm hover:bg-gray-800 transition-colors"
+                    disabled={isSubmitting}
+                    className="w-full px-8 py-3 bg-[#111827] text-white font-medium uppercase tracking-wider text-sm hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Send Message
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                   </button>
                 </form>
               </div>
@@ -178,4 +294,3 @@ export default function ContactPage() {
     </div>
   );
 }
-
