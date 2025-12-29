@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Search, User, Menu, X } from 'lucide-react';
 import CartButton from './CartButton';
+import SearchBar from './SearchBar';
 import { useAuth } from '@/contexts/AuthContext';
 
 const menuItems = [
@@ -16,6 +17,7 @@ const menuItems = [
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
   const { isAuthenticated, user } = useAuth();
   
@@ -56,6 +58,7 @@ export default function Navbar() {
             <div className="flex items-center gap-2">
               {/* Search Icon */}
               <button
+                onClick={() => setIsSearchOpen(true)}
                 className="hidden sm:flex items-center justify-center w-10 h-10 text-gray-700 hover:text-pink-500 hover:bg-pink-50 rounded-lg transition-all duration-200"
                 aria-label="Search"
               >
@@ -111,6 +114,7 @@ export default function Navbar() {
               {/* Mobile Only - Search & Profile */}
               <div className="sm:hidden flex gap-2 mt-4 pt-4 border-t border-gray-200">
                 <button
+                  onClick={() => setIsSearchOpen(true)}
                   className="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-gray-700 hover:text-pink-500 hover:bg-pink-50 rounded-lg transition-all duration-200"
                   aria-label="Search"
                 >
@@ -132,6 +136,9 @@ export default function Navbar() {
       
       {/* Spacer to prevent content from hiding under fixed navbar */}
       <div className="h-20"></div>
+
+      {/* Search Bar */}
+      <SearchBar isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
 }

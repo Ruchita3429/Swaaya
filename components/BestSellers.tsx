@@ -3,70 +3,10 @@
 import Image from 'next/image';
 import Container from './Container';
 import { useCart } from '@/contexts/CartContext';
+import { allProducts } from '@/data/products';
 
-// Best selling Indian print kurtis and related products
-const bestSellers = [
-  {
-    id: 1,
-    name: 'Kalamkari Hand Block Print Long Kurti',
-    price: '₹1,299',
-    image: '/bestseller-kalamkari-1.jpg',
-  },
-  {
-    id: 2,
-    name: 'Pure Cotton Hand Block Print Short Kurti',
-    price: '₹899',
-    image: '/bestseller-handblock-1.jpg',
-  },
-  {
-    id: 3,
-    name: 'Kalamkari Print 2 Piece Set',
-    price: '₹1,599',
-    image: '/bestseller-set-1.jpg',
-  },
-  {
-    id: 4,
-    name: 'Hand Block Print Long Kurti with Lining Pants',
-    price: '₹1,899',
-    image: '/bestseller-pants-1.jpg',
-  },
-  {
-    id: 5,
-    name: 'Ajrak Print Pure Cotton Kurti',
-    price: '₹1,199',
-    image: '/bestseller-ajrak-1.jpg',
-  },
-  {
-    id: 6,
-    name: 'Bagh Print 3 Piece Set',
-    price: '₹1,799',
-    image: '/bestseller-bagh-1.jpg',
-  },
-  {
-    id: 7,
-    name: 'Jaipur Hand Block Print Short Kurti',
-    price: '₹999',
-    image: '/bestseller-jaipur-1.jpg',
-  },
-  {
-    id: 8,
-    name: 'Mul Hand Block Print Long Kurti',
-    price: '₹1,399',
-    image: '/bestseller-mul-1.jpg',
-  },
-  {
-    id: 9,
-    name: 'Kalamkari Print 2 Piece Set with Dupatta',
-    price: '₹1,699',
-    image: '/bestseller-set-2.jpg',
-  },
-  {
-    id: 10,
-    name: 'Pure Cotton Hand Block Print Kurti',
-    price: '₹1,099',
-    image: '/bestseller-cotton-1.jpg',
-  },
-];
+// Get products 6-15 for best sellers (or you can mark specific products as bestsellers)
+const bestSellers = allProducts.slice(5, 15);
 
 export default function BestSellers() {
   const { addToCart } = useCart();
