@@ -27,3 +27,4 @@ export function useSearch(query: string): Product[] {
   return searchResults;
 }
 
+

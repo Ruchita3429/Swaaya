@@ -69,3 +69,4 @@ Use your email provider's SMTP settings. Common ports:
 - **Solution**: Run `npm install nodemailer` in the project directory
 
 
+
