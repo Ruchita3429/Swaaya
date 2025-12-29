@@ -46,12 +46,22 @@ Copy `.env.example` to `.env` and fill in your values:
 cp .env.example .env
 ```
 
-Update the following variables in `.env`:
+Create a `.env` file in the backend directory with the following variables:
 
 ```env
-DATABASE_URL="postgresql://user:password@localhost:5432/swayaa?schema=public"
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+# Database Configuration
+DATABASE_URL="postgresql://username:password@localhost:5432/swayaa_db?schema=public"
+
+# Server Configuration
+PORT=5000
+NODE_ENV=development
+
+# CORS Configuration
 CORS_ORIGIN=http://localhost:3000
+
+# JWT Configuration
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+JWT_EXPIRES_IN=7d
 ```
 
 ### 3. Set Up Database
@@ -84,10 +94,10 @@ The server will start on `http://localhost:5000` (or the PORT specified in `.env
 
 ### Authentication
 
-- `POST /api/auth/signup` - Register a new user
-- `POST /api/auth/login` - Login user
-- `POST /api/auth/logout` - Logout user
-- `GET /api/auth/me` - Get current user (protected)
+- `POST /auth/register` - Register a new user
+- `POST /auth/login` - Login user
+- `POST /auth/logout` - Logout user (protected)
+- `GET /auth/me` - Get current user (protected)
 
 ### Users
 
@@ -162,11 +172,42 @@ backend/
 
 ## Authentication
 
-The API uses JWT (JSON Web Tokens) for authentication. Include the token in the Authorization header:
+The API uses JWT (JSON Web Tokens) for authentication with bcrypt for password hashing.
 
-```
-Authorization: Bearer <your-jwt-token>
-```
+### Authentication Flow
+
+1. **Register**: `POST /auth/register`
+   ```json
+   {
+     "email": "user@example.com",
+     "name": "John Doe",
+     "password": "password123"
+   }
+   ```
+   Returns: `{ success: true, data: { user, token } }`
+
+2. **Login**: `POST /auth/login`
+   ```json
+   {
+     "email": "user@example.com",
+     "password": "password123"
+   }
+   ```
+   Returns: `{ success: true, data: { user, token } }`
+
+3. **Protected Routes**: Include the JWT token in the Authorization header:
+   ```
+   Authorization: Bearer <your-jwt-token>
+   ```
+
+4. **Logout**: `POST /auth/logout` (requires authentication)
+   - In a stateless JWT system, logout is handled client-side by removing the token
+
+### Password Security
+
+- Passwords are hashed using bcrypt with a salt rounds of 10
+- Passwords must be at least 6 characters long
+- Never store or log plain text passwords
 
 ## Error Handling
 

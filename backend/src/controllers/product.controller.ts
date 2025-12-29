@@ -6,7 +6,7 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
   try {
     const { type, printType, category, limit, offset } = req.query;
 
-    const where: any = {};
+    const where: any = { isActive: true };
     if (type) where.type = type;
     if (printType) where.printType = printType;
     if (category) where.category = category;
@@ -61,6 +61,7 @@ export const searchProducts = async (req: Request, res: Response, next: NextFunc
 
     const products = await prisma.product.findMany({
       where: {
+        isActive: true,
         OR: [
           { name: { contains: query, mode: 'insensitive' } },
           { description: { contains: query, mode: 'insensitive' } },
@@ -96,6 +97,7 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
         printType,
         category,
         stock: stock ? parseInt(stock) : 0,
+        isActive: true,
       },
     });
 

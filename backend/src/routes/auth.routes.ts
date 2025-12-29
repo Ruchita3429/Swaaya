@@ -5,8 +5,11 @@ import { validateSignup, validateLogin } from '../middleware/validation.middlewa
 
 const router = express.Router();
 
-router.post('/signup', validateSignup, signup);
+// Public routes
+router.post('/register', validateSignup, signup);
 router.post('/login', validateLogin, login);
+
+// Protected routes
 router.post('/logout', authenticate, logout);
 router.get('/me', authenticate, getCurrentUser);
 

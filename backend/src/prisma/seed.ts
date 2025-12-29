@@ -14,7 +14,7 @@ async function main() {
     create: {
       email: 'test@example.com',
       name: 'Test User',
-      password: hashedPassword,
+      passwordHash: hashedPassword,
     },
   });
 
@@ -78,7 +78,10 @@ async function main() {
     await prisma.product.upsert({
       where: { name: product.name },
       update: {},
-      create: product,
+      create: {
+        ...product,
+        isActive: true,
+      },
     });
   }
 

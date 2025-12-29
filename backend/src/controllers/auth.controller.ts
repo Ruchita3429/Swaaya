@@ -26,7 +26,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
       data: {
         email,
         name,
-        password: hashedPassword,
+        passwordHash: hashedPassword,
       },
       select: {
         id: true,
@@ -74,7 +74,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     }
 
     // Verify password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
 
     if (!isPasswordValid) {
       throw createError('Invalid email or password', 401);

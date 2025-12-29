@@ -24,7 +24,7 @@ export const createOrder = async (req: AuthRequest, res: Response, next: NextFun
     }
 
     // Calculate total
-    const total = cart.items.reduce((sum, item) => {
+    const totalAmount = cart.items.reduce((sum, item) => {
       return sum + item.product.price * item.quantity;
     }, 0);
 
@@ -32,7 +32,7 @@ export const createOrder = async (req: AuthRequest, res: Response, next: NextFun
     const order = await prisma.order.create({
       data: {
         userId,
-        total,
+        totalAmount,
         status: 'pending',
         items: {
           create: cart.items.map((item) => ({
