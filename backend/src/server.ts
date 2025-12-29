@@ -10,6 +10,7 @@ import userRoutes from './routes/user.routes';
 import productRoutes from './routes/product.routes';
 import cartRoutes from './routes/cart.routes';
 import orderRoutes from './routes/order.routes';
+import contactRoutes from './routes/contact.routes';
 
 // Load environment variables
 dotenv.config();
@@ -41,9 +42,10 @@ app.get('/health', (req: Request, res: Response) => {
 // API Routes
 app.use('/auth', authRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/products', productRoutes);
+app.use('/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/contact', contactRoutes);
 
 // 404 handler
 app.use(notFoundHandler);

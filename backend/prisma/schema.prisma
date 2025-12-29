@@ -44,6 +44,9 @@ model Product {
 
   @@index([category])
   @@index([isActive])
+  @@index([price])
+  @@index([type])
+  @@index([printType])
   @@map("products")
 }
 

@@ -62,7 +62,30 @@ CORS_ORIGIN=http://localhost:3000
 # JWT Configuration
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
 JWT_EXPIRES_IN=7d
+
+# SMTP Email Configuration
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+SMTP_FROM=your-email@gmail.com
+
+# Contact Email (where contact form submissions will be sent)
+CONTACT_EMAIL=hello@swayaaindia.com
 ```
+
+### Email Configuration
+
+For Gmail:
+1. Enable 2-Step Verification on your Google account
+2. Generate an App Password: Google Account → Security → App passwords
+3. Use the 16-character app password (not your regular Gmail password)
+
+For other providers, use their SMTP settings:
+- **Outlook/Hotmail**: `smtp-mail.outlook.com:587`
+- **Yahoo**: `smtp.mail.yahoo.com:587`
+- **Custom SMTP**: Use your provider's SMTP settings
 
 ### 3. Set Up Database
 
@@ -106,12 +129,22 @@ The server will start on `http://localhost:5000` (or the PORT specified in `.env
 
 ### Products
 
-- `GET /api/products` - Get all products (with filters: type, printType, category)
-- `GET /api/products/search?q=query` - Search products
-- `GET /api/products/:id` - Get product by ID
-- `POST /api/products` - Create product (protected, admin)
-- `PUT /api/products/:id` - Update product (protected, admin)
-- `DELETE /api/products/:id` - Delete product (protected, admin)
+- `GET /products` - Get all products with pagination and filters
+  - Query parameters:
+    - `category` - Filter by category
+    - `priceRange` - Filter by price range (format: "min-max" or "min-" or "-max")
+    - `type` - Filter by product type
+    - `printType` - Filter by print type
+    - `page` - Page number (default: 1)
+    - `limit` - Items per page (default: 20, max: 100)
+    - `sortBy` - Sort field (createdAt, price, name, updatedAt)
+    - `sortOrder` - Sort order (asc, desc)
+  - Example: `GET /products?category=handblock-prints&priceRange=500-2000&page=1&limit=10`
+- `GET /products/:id` - Get product by ID
+- `GET /products/search?q=query` - Search products
+- `POST /products` - Create product (protected, admin)
+- `PUT /products/:id` - Update product (protected, admin)
+- `DELETE /products/:id` - Delete product (protected, admin)
 
 ### Cart
 
@@ -121,12 +154,27 @@ The server will start on `http://localhost:5000` (or the PORT specified in `.env
 - `DELETE /api/cart/items/:itemId` - Remove item from cart (protected)
 - `DELETE /api/cart` - Clear cart (protected)
 
-### Orders
+### Orders (Checkout Flow)
 
 - `POST /api/orders` - Create order from cart (protected)
+  - Validates cart (checks stock availability, product active status)
+  - Creates order with order items
+  - Updates product stock
+  - Clears cart after successful order creation
+  - Sends order confirmation email to customer
+  - Returns detailed order summary
+  - Uses database transaction for atomicity
 - `GET /api/orders` - Get user's orders (protected)
 - `GET /api/orders/:id` - Get order by ID (protected)
 - `PATCH /api/orders/:id/status` - Update order status (protected, admin)
+
+### Contact
+
+- `POST /api/contact` - Submit contact form
+  - Validates form data (name, email, subject, message)
+  - Sends email to configured contact email
+  - Sends confirmation email to user
+  - Returns success message
 
 ## Project Structure
 
